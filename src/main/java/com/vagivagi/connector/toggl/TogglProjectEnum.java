@@ -27,7 +27,7 @@ public enum TogglProjectEnum {
 
     static TogglProjectEnum toToggleProjectEnum(String name) {
         for (TogglProjectEnum value : TogglProjectEnum.values()) {
-            if (value.getName().equals(name)) {
+            if (value.getName().equalsIgnoreCase(name)) {
                 return value;
             }
         }
