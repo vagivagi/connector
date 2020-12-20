@@ -3,7 +3,6 @@ package com.vagivagi.connector.toggl;
 import com.vagivagi.connector.common.ConnectorResponseBody;
 import com.vagivagi.connector.ifttt.IftttService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -51,7 +50,13 @@ public class TogglWrapperHandler {
                             .body(this.togglWrapperService.specificStart(payload.getDescription(),
                                     TogglProjectEnum.toToggleProjectEnum(request.queryParam("projectName").get()))
                                     , ConnectorResponseBody.class);
-                });
+                }).onErrorResume(e ->
+                        ServerResponse
+                                .badRequest()
+                                .body(Mono.just(ConnectorResponseBody
+                                        .builder()
+                                        .message("Error " + e.getMessage())
+                                        .build()), ConnectorResponseBody.class));
     }
 
     Mono<ServerResponse> goHome(ServerRequest request) {
@@ -71,11 +76,17 @@ public class TogglWrapperHandler {
                             .log("light on").subscribe();
                     return ServerResponse.ok()
                             .body(this.togglWrapperService.specificStart(payload.getDescription(), TogglProjectEnum.HOUSEWORK)
-                                    , ConnectorResponseBody.class);
+                                    , ConnectorResponseBody.class)
+                            .onErrorResume(e ->
+                                    ServerResponse
+                                            .badRequest()
+                                            .body(Mono.just(ConnectorResponseBody
+                                                    .builder()
+                                                    .message("Error " + e.getMessage())
+                                                    .build()), ConnectorResponseBody.class));
                 });
     }
 
-    @ExceptionHandler(Exception.class)
     Mono<ServerResponse> errorResponse(Throwable e) {
         return Mono.error(() -> e);
     }
