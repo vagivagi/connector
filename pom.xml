@@ -35,28 +35,27 @@
     <dependency> 
       <groupId>jakarta.xml.bind</groupId>  
       <artifactId>jakarta.xml.bind-api</artifactId> 
-    </dependency>  
-    <dependency> 
-      <groupId>org.springframework.experimental</groupId>  
-      <artifactId>spring-graalvm-native</artifactId>  
-      <version>0.8.2</version> 
-    </dependency>  
+    </dependency>
     <dependency> 
       <groupId>org.springframework.boot</groupId>  
       <artifactId>spring-boot-starter-test</artifactId>  
       <scope>test</scope> 
     </dependency> 
   </dependencies>  
-  <build> 
+  <build>
+    <finalName>app</finalName>
     <plugins> 
       <plugin> 
         <groupId>org.springframework.boot</groupId>  
-        <artifactId>spring-boot-maven-plugin</artifactId> 
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>com.vagivagi.connector.HomeConnectorApplication</mainClass>
+        </configuration>
       </plugin>  
       <plugin>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-webapp-maven-plugin</artifactId>
-        <version>1.8.0</version>
+        <version>1.12.0</version>
         <configuration>
           <schemaVersion>V2</schemaVersion>
           <resourceGroup>vagivagi-home-rg</resourceGroup>
@@ -85,6 +84,13 @@
             </resources>
           </deployment>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>8.20</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins> 
   </build>  
