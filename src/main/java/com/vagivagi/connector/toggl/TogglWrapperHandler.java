@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -64,7 +65,7 @@ public class TogglWrapperHandler {
                 .bodyToMono(TogglWrapperEntryRequest.class) //
                 .flatMap(payload -> {
                     togglWrapperVerifier.verify(payload);
-                    int nowHour = LocalDateTime.now().getHour();
+                    int nowHour = LocalDateTime.now(ZoneId.of("Asia/Tokyo")).getHour();
                     if (0 <= nowHour && nowHour <= 7) {
                         // now sleep
                         return ServerResponse.ok()
