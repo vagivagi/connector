@@ -14,9 +14,9 @@ hub API for IFTTT, Toggl
 $ # build native image
 $ ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=connector
 $ # docker tag
-$ docker tag docker.io/library/connector:latest docker.pkg.github.com/vagivagi/connector/connector:latest
+$ docker tag docker.io/library/connector:latest ghcr.io/vagivagi/connector:latest
 $ # docker push
-$ docker push docker.pkg.github.com/vagivagi/connector/connector:latest
+$ docker push ghcr.io/vagivagi/connector:latest
 $ # deploy azure(after az login command)
 $ az webapp create --resource-group ${RESOURCE_GROUP} \
 $    --plan ${PLAN} --name ${APP_NAME} \
