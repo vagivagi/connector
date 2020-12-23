@@ -1,0 +1,22 @@
+[
+  {
+    "name": "com.vagivagi.connector.toggl.TogglResponseBody",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.vagivagi.connector.toggl.TogglStartEntryRequestBody",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.vagivagi.connector.toggl.TogglWrapperEntryRequest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.vagivagi.connector.common.ConnectorResponseBody",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  }
+]
