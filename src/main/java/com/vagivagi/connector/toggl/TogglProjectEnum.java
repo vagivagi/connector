@@ -31,6 +31,6 @@ public enum TogglProjectEnum {
                 return value;
             }
         }
-        throw new TogglWrapperNotExistProjectException(name + "is not found.");
+        throw new TogglWrapperNotExistProjectException(name + " is not found.");
     }
 }
