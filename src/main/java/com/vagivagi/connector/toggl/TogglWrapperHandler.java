@@ -37,8 +37,15 @@ public class TogglWrapperHandler {
         return request.bodyToMono(TogglWrapperEntryRequest.class) //
                 .flatMap(payload -> {
                     togglWrapperVerifier.verify(payload);
-                    return ServerResponse.ok()
-                            .body(this.togglWrapperService.start(payload), ConnectorResponseBody.class);
+                    return togglWrapperService.getTimeEntryFromPastRecord(payload.getDescription())
+                            .log("get pid")
+                            .flatMap(
+                                    timeEntry -> {
+                                        return ServerResponse.ok()
+                                                .body(this.togglWrapperService.start(payload.getDescription(), timeEntry.getPid()),
+                                                        ConnectorResponseBody.class);
+                                    }
+                            );
                 });
     }
 

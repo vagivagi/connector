@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
+
 @Service
 public class TogglWrapperService {
     private static Logger log = LoggerFactory.getLogger(TogglWrapperService.class);
@@ -21,11 +23,11 @@ public class TogglWrapperService {
                 .log("stop entry").map(body -> ConnectorResponseBody.builder().message("OK").body(body).build());
     }
 
-    Mono<ConnectorResponseBody> start(TogglWrapperEntryRequest request) {
+    Mono<ConnectorResponseBody> start(String description, int pid) {
         return togglClient.startEntry(
                 Mono.just(TogglStartEntryRequestBody.builder()
-                        .description(request.getDescription())
-                        .pid(request.getPid())
+                        .description(description)
+                        .pid(pid)
                         .createdWith("vagivagi api")
                         .build())).doOnError(response -> log.error("error caused", response))
                 .log("start entry")
@@ -41,5 +43,14 @@ public class TogglWrapperService {
                         .build())).doOnError(response -> log.error("error caused", response))
                 .log("start entry")
                 .map(body -> ConnectorResponseBody.builder().message("OK").body(body).build());
+    }
+
+    Mono<TogglTimeEntry> getTimeEntryFromPastRecord(String description) {
+        return togglClient.getTimeEntries()
+                .filter(
+                        timeEntry ->
+                                description.equalsIgnoreCase(timeEntry.getDescription())
+                ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
+                .take(1).single();
     }
 }
