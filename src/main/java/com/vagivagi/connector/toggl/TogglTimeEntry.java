@@ -5,6 +5,14 @@ import com.vagivagi.connector.common.ThirdResponseBody;
 import java.time.OffsetDateTime;
 
 public class TogglTimeEntry implements ThirdResponseBody {
+    public TogglTimeEntry(String description, int pid) {
+        this.description = description;
+        this.pid = pid;
+    }
+
+    public TogglTimeEntry() {
+    }
+
     private int id;
     private int wid;
     private int pid;
