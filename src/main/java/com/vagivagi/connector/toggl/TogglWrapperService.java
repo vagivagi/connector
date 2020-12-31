@@ -26,7 +26,7 @@ public class TogglWrapperService {
     Mono<ConnectorResponseBody> start(String description, int pid) {
         return togglClient.startEntry(
                 Mono.just(TogglStartEntryRequestBody.builder()
-                        .description(description)
+                        .description(description.trim())
                         .pid(pid)
                         .createdWith("vagivagi api")
                         .build())).doOnError(response -> log.error("error caused", response))
@@ -37,7 +37,7 @@ public class TogglWrapperService {
     Mono<ConnectorResponseBody> specificStart(String description, TogglProjectEnum togglProjectEnum) {
         return togglClient.startEntry(
                 Mono.just(TogglStartEntryRequestBody.builder()
-                        .description(description)
+                        .description(description.trim())
                         .pid(togglProjectEnum.getPid())
                         .createdWith("vagivagi api")
                         .build())).doOnError(response -> log.error("error caused", response))
@@ -49,7 +49,7 @@ public class TogglWrapperService {
         return togglClient.getTimeEntries()
                 .filter(
                         timeEntry ->
-                                description.equalsIgnoreCase(timeEntry.getDescription())
+                                description.trim().equalsIgnoreCase(timeEntry.getDescription())
                 ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
                 .take(1).single();
     }
