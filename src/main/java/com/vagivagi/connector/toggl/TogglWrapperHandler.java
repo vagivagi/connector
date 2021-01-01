@@ -80,7 +80,7 @@ public class TogglWrapperHandler {
                                 .body(Mono.just(ConnectorResponseBody.builder().message("Now sleeping").build())
                                         , ConnectorResponseBody.class);
                     }
-                    iftttService.triggerLightOn()
+                    iftttService.triggerLightChange()
                             .doOnError(response -> errorResponse(response))
                             .log("light change").subscribe();
                     return ServerResponse.ok()
@@ -107,7 +107,7 @@ public class TogglWrapperHandler {
                                 .body(Mono.just(ConnectorResponseBody.builder().message("Now sleeping").build())
                                         , ConnectorResponseBody.class);
                     }
-                    iftttService.triggerLightOn()
+                    iftttService.triggerLightChange()
                             .doOnError(response -> errorResponse(response))
                             .log("light change").subscribe();
                     return ServerResponse.ok()
