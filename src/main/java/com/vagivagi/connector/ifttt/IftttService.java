@@ -11,7 +11,7 @@ public class IftttService {
         this.iftttClient = iftttClient;
     }
 
-    public Mono<String> triggerLightOn(){
+    public Mono<String> triggerLightChange(){
         return iftttClient.triggerEvent(IftttEventEnum.LIGHT_0N);
     }
 }
