@@ -49,7 +49,7 @@ public class TogglWrapperService {
         return togglClient.getTimeEntries()
                 .filter(
                         timeEntry ->
-                                description.trim().equalsIgnoreCase(timeEntry.getDescription())
+                                description.trim().equalsIgnoreCase(timeEntry.getDescription().trim())
                 ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
                 .take(1).single();
     }
