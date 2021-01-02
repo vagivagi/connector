@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 @Service
 public class TogglWrapperService {
@@ -49,8 +50,11 @@ public class TogglWrapperService {
         return togglClient.getTimeEntries()
                 .filter(
                         timeEntry ->
-                                description.trim().equalsIgnoreCase(timeEntry.getDescription().trim())
+                                Optional.ofNullable(description).orElse("").trim()
+                                        .equalsIgnoreCase(
+                                                Optional.ofNullable(timeEntry.getDescription())
+                                                        .orElse("").trim())
                 ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
-                .take(1).single();
+                .take(1).single().defaultIfEmpty(null);
     }
 }
