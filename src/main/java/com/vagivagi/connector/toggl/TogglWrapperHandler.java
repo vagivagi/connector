@@ -38,7 +38,7 @@ public class TogglWrapperHandler {
         return request.bodyToMono(TogglWrapperEntryRequest.class) //
                 .flatMap(payload -> {
                     togglWrapperVerifier.verify(payload);
-                    return togglWrapperService.getTimeEntryFromPastRecord(payload.getDescription())
+                    return togglWrapperService.getTimeEntryFromPastRecord(payload.getDescription(), payload.getPid())
                             .defaultIfEmpty(new TogglTimeEntry(payload.getDescription(), payload.getPid()))
                             .log("get pid")
                             .flatMap(

@@ -46,7 +46,7 @@ public class TogglWrapperService {
                 .map(body -> ConnectorResponseBody.builder().message("OK").body(body).build());
     }
 
-    Mono<TogglTimeEntry> getTimeEntryFromPastRecord(String description) {
+    Mono<TogglTimeEntry> getTimeEntryFromPastRecord(String description, int pid) {
         return togglClient.getTimeEntries()
                 .filter(
                         timeEntry ->
@@ -55,6 +55,6 @@ public class TogglWrapperService {
                                                 Optional.ofNullable(timeEntry.getDescription())
                                                         .orElse("").trim())
                 ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
-                .take(1).single().defaultIfEmpty(null);
+                .take(1).defaultIfEmpty(new TogglTimeEntry(description, pid)).single();
     }
 }
