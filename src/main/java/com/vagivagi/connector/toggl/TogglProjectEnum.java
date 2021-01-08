@@ -8,15 +8,16 @@ public enum TogglProjectEnum {
     SLEEP(161127207, "Sleep"),
     GAME(161126779, "Game"),
     EXERCISE(161126796, "Exercise"),
+    COMMUTING(164896217, "Commuting"),
+    MOVIE(161127080,"Movie"),
     ENGLISH_HATSUON(165302294, "EnglishHatsuon"),
-    ENGLISH_HOBBY(165302316,"EnglishHobby"),
+    ENGLISH_HOBBY(165302316, "EnglishHobby"),
     ENGLISH_SEIDOKU(165302299, "EnglishSeidoku"),
     ENGLISH_COMPOSITION(165302297, "EnglishComposition"),
     ENGLISH_PRE_TADOKU(165302304, "EnglishPreTadoku"),
     ENGLISH_SPEAKING(165302313, "EnglishSpeaking"),
     ENGLISH_TOEIC(165302314, "EnglishSpeaking"),
-    ENGLISH_
-    ;
+    ENGLISH_WORD(165302310, "EnglishWord");
 
     TogglProjectEnum(int pid, String name) {
         this.pid = pid;
