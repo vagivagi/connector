@@ -8,6 +8,8 @@ public enum TogglProjectEnum {
     SLEEP(161127207, "Sleep"),
     GAME(161126779, "Game"),
     EXERCISE(161126796, "Exercise"),
+    COMMUTING(164896217, "Commuting"),
+    MOVIE(161127080,"Movie"),
     ENGLISH_HATSUON(165302294, "EnglishHatsuon"),
     ENGLISH_HOBBY(165302316, "EnglishHobby"),
     ENGLISH_SEIDOKU(165302299, "EnglishSeidoku"),
