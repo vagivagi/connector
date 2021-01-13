@@ -107,9 +107,6 @@ public class TogglWrapperHandler {
                                 .body(Mono.just(ConnectorResponseBody.builder().message("Now sleeping").build())
                                         , ConnectorResponseBody.class);
                     }
-                    iftttService.triggerLightChange()
-                            .doOnError(response -> errorResponse(response))
-                            .log("light change").subscribe();
                     return ServerResponse.ok()
                             .body(this.togglWrapperService.specificStart(payload.getDescription(), TogglProjectEnum.GOING_OUT)
                                     , ConnectorResponseBody.class)
