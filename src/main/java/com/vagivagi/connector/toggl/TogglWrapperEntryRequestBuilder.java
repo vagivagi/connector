@@ -13,7 +13,7 @@ public class TogglWrapperEntryRequestBuilder {
     }
 
     public TogglWrapperEntryRequestBuilder(TogglWrapperEntryRequest request) {
-        this.description = request.getDescription().trim();
+        this.description = request.getDescription().replaceAll(" ", "");
         this.wid = request.getWid();
         this.pid = request.getPid();
         this.key = request.getKey();
@@ -24,7 +24,7 @@ public class TogglWrapperEntryRequestBuilder {
     }
 
     public TogglWrapperEntryRequestBuilder withDescription(String description) {
-        this.description = description;
+        this.description = description.replaceAll(" ", "");
         return this;
     }
 
