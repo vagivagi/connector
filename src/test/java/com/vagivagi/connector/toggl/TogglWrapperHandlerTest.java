@@ -30,20 +30,33 @@ public class TogglWrapperHandlerTest {
         TogglWrapperHandler togglWrapperHandler =
                 new TogglWrapperHandler(togglWrapperService, togglWrapperVerifier, iftttService);
         RouterFunction routerFunction = togglWrapperHandler.routes();
-        when(togglWrapperService.start("description", 0))
-                .thenReturn(Mono.just(ConnectorResponseBody.builder()
-                        .message("success").body(new TogglTimeEntryResponseBody()).build()));
-        when(togglWrapperService.getTimeEntryFromPastRecord("description", 0))
-                .thenReturn(Mono.just(new TogglTimeEntry()));
-        // when(iftttService.triggerLightChange()).thenReturn(Mono.just("success"));
         client = WebTestClient.bindToRouterFunction(routerFunction).configureClient().build();
     }
 
     @Test
     public void startSelectable() {
+        when(togglWrapperService.start("description", 0))
+                .thenReturn(Mono.just(ConnectorResponseBody.builder()
+                        .message("success").body(new TogglTimeEntryResponseBody()).build()));
+        when(togglWrapperService.getTimeEntryFromPastRecord("description", 0))
+                .thenReturn(Mono.just(new TogglTimeEntry()));
         client
                 .post()
                 .uri("/toggl/start")
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(new TogglWrapperEntryRequest("description", 0, 0, "test-key")), TogglWrapperEntryRequest.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
+
+    @Test
+    public void startProject() {
+        when(togglWrapperService.specificStart("description", TogglProjectEnum.SLEEP))
+                .thenReturn(Mono.just(new ConnectorResponseBody("success", new TogglTimeEntryResponseBody())));
+        client
+                .post()
+                .uri(builder -> builder.path("/toggl/startProject").queryParam("projectName", "Sleep").build())
                 .accept(MediaType.APPLICATION_JSON)
                 .body(Mono.just(new TogglWrapperEntryRequest("description", 0, 0, "test-key")), TogglWrapperEntryRequest.class)
                 .exchange()
