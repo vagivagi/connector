@@ -7,3 +7,6 @@ services:
     restart: always
     environment:
       INFO_MESSAGE: Hello World!
+      JAVA_OPTS : "-XX:ReservedCodeCacheSize=32M -Xss512k"
+      BPL_JVM_THREAD_COUNT : "20"
+      BPL_JVM_HEAD_ROOM : "5"
