@@ -63,4 +63,33 @@ public class TogglWrapperHandlerTest {
                 .expectStatus()
                 .isOk();
     }
+
+    @Test
+    public void goHome() {
+        when(togglWrapperService.specificStart("description", TogglProjectEnum.HOUSEWORK))
+                .thenReturn(Mono.just(new ConnectorResponseBody("success", new TogglTimeEntryResponseBody())));
+        when(iftttService.triggerLightChange()).thenReturn(Mono.just("success"));
+        client
+                .post()
+                .uri(builder -> builder.path("/toggl/goHome").build())
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(new TogglWrapperEntryRequest("description", 0, 0, "test-key")), TogglWrapperEntryRequest.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
+
+    @Test
+    public void goingOut() {
+        when(togglWrapperService.specificStart("description", TogglProjectEnum.GOING_OUT))
+                .thenReturn(Mono.just(new ConnectorResponseBody("success", new TogglTimeEntryResponseBody())));
+        client
+                .post()
+                .uri(builder -> builder.path("/toggl/goingOut").build())
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(new TogglWrapperEntryRequest("description", 0, 0, "test-key")), TogglWrapperEntryRequest.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
 }
