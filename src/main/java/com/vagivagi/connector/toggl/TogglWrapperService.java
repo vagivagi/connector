@@ -57,4 +57,11 @@ public class TogglWrapperService {
                 ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
                 .take(1).defaultIfEmpty(new TogglTimeEntry(description, pid)).single();
     }
+
+    void restartCurrentTimeEntry() {
+        togglClient.getCurrentEntry()
+                .flatMap(
+                        timeEntry -> this.start(timeEntry.getData().getDescription(), timeEntry.getData().getPid())
+                ).subscribe();
+    }
 }

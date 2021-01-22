@@ -69,6 +69,8 @@
                                         -Dspring.spel.ignore=true
                                         -Dspring.native.remove-yaml-support=true
                                     </BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                    <BPL_JVM_THREAD_COUNT>20</BPL_JVM_THREAD_COUNT>
+                                    <BPL_JVM_HEAD_ROOM>5</BPL_JVM_HEAD_ROOM>
                                 </env>
                             </image>
                         </configuration>
