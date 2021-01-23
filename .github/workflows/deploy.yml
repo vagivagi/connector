@@ -51,4 +51,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_APP_NAME }}
-        images: docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+        images: docker.pkg.github.com/${{ github.repository }}/${{ IMAGE_NAME }}
