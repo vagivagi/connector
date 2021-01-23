@@ -1,6 +1,7 @@
 package com.vagivagi.connector.toggl;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
+import com.vagivagi.connector.common.LifeUtil;
 import com.vagivagi.connector.ifttt.IftttService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,11 +25,13 @@ public class TogglWrapperHandlerTest {
     private TogglWrapperVerifier togglWrapperVerifier;
     @Mock
     private IftttService iftttService;
+    @Mock
+    private LifeUtil lifeUtil;
 
     @BeforeEach
     public void setUp() {
         TogglWrapperHandler togglWrapperHandler =
-                new TogglWrapperHandler(togglWrapperService, togglWrapperVerifier, iftttService);
+                new TogglWrapperHandler(togglWrapperService, togglWrapperVerifier, iftttService, lifeUtil);
         RouterFunction routerFunction = togglWrapperHandler.routes();
         client = WebTestClient.bindToRouterFunction(routerFunction).configureClient().build();
     }
@@ -69,6 +72,7 @@ public class TogglWrapperHandlerTest {
         when(togglWrapperService.specificStart("description", TogglProjectEnum.HOUSEWORK))
                 .thenReturn(Mono.just(new ConnectorResponseBody("success", new TogglTimeEntryResponseBody())));
         when(iftttService.triggerLightChange()).thenReturn(Mono.just("success"));
+        when(lifeUtil.isSleeping()).thenReturn(false);
         client
                 .post()
                 .uri(builder -> builder.path("/toggl/goHome").build())
@@ -83,6 +87,7 @@ public class TogglWrapperHandlerTest {
     public void goingOut() {
         when(togglWrapperService.specificStart("description", TogglProjectEnum.GOING_OUT))
                 .thenReturn(Mono.just(new ConnectorResponseBody("success", new TogglTimeEntryResponseBody())));
+        when(lifeUtil.isSleeping()).thenReturn(false);
         client
                 .post()
                 .uri(builder -> builder.path("/toggl/goingOut").build())

@@ -1,15 +1,13 @@
 package com.vagivagi.connector.toggl;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
+import com.vagivagi.connector.common.LifeUtil;
 import com.vagivagi.connector.ifttt.IftttService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -19,12 +17,14 @@ public class TogglWrapperHandler {
     private final TogglWrapperService togglWrapperService;
     private final TogglWrapperVerifier togglWrapperVerifier;
     private final IftttService iftttService;
+    private final LifeUtil lifeUtil;
 
     public TogglWrapperHandler(TogglWrapperService togglWrapperService
-            , TogglWrapperVerifier togglWrapperVerifier, IftttService iftttService) {
+            , TogglWrapperVerifier togglWrapperVerifier, IftttService iftttService, LifeUtil lifeUtil) {
         this.togglWrapperService = togglWrapperService;
         this.togglWrapperVerifier = togglWrapperVerifier;
         this.iftttService = iftttService;
+        this.lifeUtil = lifeUtil;
     }
 
     public RouterFunction<ServerResponse> routes() {
@@ -74,7 +74,7 @@ public class TogglWrapperHandler {
                 .bodyToMono(TogglWrapperEntryRequest.class) //
                 .flatMap(payload -> {
                     togglWrapperVerifier.verify(payload);
-                    if (isSleeping()) {
+                    if (lifeUtil.isSleeping()) {
                         // now sleep
                         return ServerResponse.ok()
                                 .body(Mono.just(ConnectorResponseBody.builder().message("Now sleeping").build())
@@ -101,7 +101,7 @@ public class TogglWrapperHandler {
                 .bodyToMono(TogglWrapperEntryRequest.class) //
                 .flatMap(payload -> {
                     togglWrapperVerifier.verify(payload);
-                    if (isSleeping()) {
+                    if (lifeUtil.isSleeping()) {
                         // now sleep
                         return ServerResponse.ok()
                                 .body(Mono.just(ConnectorResponseBody.builder().message("Now sleeping").build())
@@ -124,8 +124,4 @@ public class TogglWrapperHandler {
         return Mono.error(() -> e);
     }
 
-    private boolean isSleeping() {
-        int nowHour = LocalDateTime.now(ZoneId.of("Asia/Tokyo")).getHour();
-        return 0 <= nowHour && nowHour <= 7;
-    }
 }
