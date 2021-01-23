@@ -19,6 +19,8 @@ jobs:
         java-version: 11
     - name: Grant execute permission for maven
       run: chmod +x ./mvnw
+    - name: Unit test with Maven
+        run: ./mvnw test
     - name: Build Docker Image
       run: ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME
     - name: Log into registry
