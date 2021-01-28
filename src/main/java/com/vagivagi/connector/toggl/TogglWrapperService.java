@@ -58,10 +58,12 @@ public class TogglWrapperService {
                 .take(1).defaultIfEmpty(new TogglTimeEntry(description, pid)).single();
     }
 
-    void restartCurrentTimeEntry() {
-        togglClient.getCurrentEntry()
+    Mono<ConnectorResponseBody> restartCurrentTimeEntry() {
+        return togglClient.getCurrentEntry()
                 .flatMap(
-                        timeEntry -> this.start(timeEntry.getData().getDescription(), timeEntry.getData().getPid())
-                ).subscribe();
+                        timeEntry -> {
+                            return this.start(timeEntry.getData().getDescription(), timeEntry.getData().getPid());
+                        }
+                );
     }
 }
