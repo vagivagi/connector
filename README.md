@@ -28,6 +28,6 @@ $    --multicontainer-config-file docker-compose.yml
 
 ```shell script
 $ curl -X POST -H "Content-Type: application/json" \
-$ https://localhost:8080/toggl/start \
+$ http://localhost:8080/toggl/start \
 $ -d '{"description":"description","key":"your_key"}'
 ```
