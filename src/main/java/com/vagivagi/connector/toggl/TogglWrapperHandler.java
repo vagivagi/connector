@@ -31,7 +31,8 @@ public class TogglWrapperHandler {
         return route(POST("/toggl/start"), this::startSelectable)
                 .andRoute(POST("/toggl/startProject"), this::startProject)
                 .andRoute(POST("/toggl/goHome"), this::goHome)
-                .andRoute(POST("/toggl/goingOut"), this::goingOut);
+                .andRoute(POST("/toggl/goingOut"), this::goingOut)
+                .andRoute(POST("/toggl/restart"), this::restartCurrentEntry);
     }
 
     Mono<ServerResponse> startSelectable(ServerRequest request) {
@@ -109,6 +110,24 @@ public class TogglWrapperHandler {
                     }
                     return ServerResponse.ok()
                             .body(this.togglWrapperService.specificStart(payload.getDescription(), TogglProjectEnum.GOING_OUT)
+                                    , ConnectorResponseBody.class)
+                            .onErrorResume(e ->
+                                    ServerResponse
+                                            .badRequest()
+                                            .body(Mono.just(ConnectorResponseBody
+                                                    .builder()
+                                                    .message("Error " + e.getMessage())
+                                                    .build()), ConnectorResponseBody.class));
+                });
+    }
+
+    Mono<ServerResponse> restartCurrentEntry(ServerRequest request) {
+        return request
+                .bodyToMono(TogglWrapperEntryRequest.class) //
+                .flatMap(payload -> {
+                    togglWrapperVerifier.verify(payload);
+                    return ServerResponse.ok()
+                            .body(this.togglWrapperService.restartCurrentTimeEntry()
                                     , ConnectorResponseBody.class)
                             .onErrorResume(e ->
                                     ServerResponse
