@@ -13,6 +13,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import reactor.core.publisher.Mono;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,6 +44,8 @@ public class TogglWrapperHandlerTest {
                         .message("success").body(new TogglTimeEntryResponseBody()).build()));
         when(togglWrapperService.getTimeEntryFromPastRecord("description", 0))
                 .thenReturn(Mono.just(new TogglTimeEntry()));
+        when(togglWrapperService.convertNumberEntryToWorkProject(any()))
+                .thenReturn(Mono.just(new TogglTimeEntry("description", 0)));
         client
                 .post()
                 .uri("/toggl/start")
