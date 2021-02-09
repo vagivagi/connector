@@ -44,9 +44,14 @@ public class TogglWrapperHandler {
                             .log("get pid")
                             .flatMap(
                                     timeEntry -> {
-                                        return ServerResponse.ok()
-                                                .body(this.togglWrapperService.start(payload.getDescription(), timeEntry.getPid()),
-                                                        ConnectorResponseBody.class);
+                                        return this.togglWrapperService.convertNumberEntryToWorkProject(Mono.just(timeEntry)).flatMap(
+                                                entry -> {
+                                                    return ServerResponse.ok()
+                                                            .body(this.togglWrapperService.start(entry.getDescription(), entry.getPid()),
+                                                                    ConnectorResponseBody.class);
+                                                }
+                                        );
+
                                     }
                             );
                 });

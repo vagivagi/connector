@@ -1,6 +1,7 @@
 package com.vagivagi.connector.toggl;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,17 @@ public class TogglWrapperService {
                                                         .orElse("").trim())
                 ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
                 .take(1).defaultIfEmpty(new TogglTimeEntry(description, pid)).single();
+    }
+
+    Mono<TogglTimeEntry> convertNumberEntryToWorkProject(Mono<TogglTimeEntry> entryMono) {
+        return entryMono.flatMap(
+                timeEntry -> {
+                    if (NumberUtils.isNumber(timeEntry.getDescription())) {
+                        return Mono.just(new TogglTimeEntry(timeEntry.getDescription(), TogglProjectEnum.WORK.getPid()));
+                    }
+                    return Mono.just(timeEntry);
+                }
+        );
     }
 
     Mono<ConnectorResponseBody> restartCurrentTimeEntry() {
