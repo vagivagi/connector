@@ -12,12 +12,16 @@ public class TogglProperties {
     private final String reportBaseUrl;
     private final String apiToken;
     private final String myKey;
+    private final String userAgent;
+    private final String workspaceId;
 
-    public TogglProperties(String baseUrl, String reportBaseUrl, String apiToken, String myKey) {
+    public TogglProperties(String baseUrl, String reportBaseUrl, String apiToken, String myKey, String userAgent, String workspaceId) {
         this.baseUrl = baseUrl;
         this.reportBaseUrl = reportBaseUrl;
         this.apiToken = apiToken;
         this.myKey = myKey;
+        this.userAgent = userAgent;
+        this.workspaceId = workspaceId;
     }
 
     public String getBaseUrl() {
@@ -34,5 +38,13 @@ public class TogglProperties {
 
     public String getMyKey() {
         return myKey;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public String getWorkspaceId() {
+        return workspaceId;
     }
 }
