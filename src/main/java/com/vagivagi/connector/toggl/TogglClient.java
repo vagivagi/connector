@@ -7,8 +7,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-
 @Component
 public class TogglClient {
     private final WebClient webClient;
@@ -49,12 +47,5 @@ public class TogglClient {
                 .uri("time_entries")
                 .retrieve()
                 .bodyToFlux(TogglTimeEntry.class);
-    }
-
-    public Mono<TogglDetailedReportResponse> getDetailedReport(Map<String, ?> parameterMap) {
-        return this.webClient.get()
-                .uri("reports/api/v2/details", parameterMap)
-                .retrieve()
-                .bodyToMono(TogglDetailedReportResponse.class);
     }
 }
