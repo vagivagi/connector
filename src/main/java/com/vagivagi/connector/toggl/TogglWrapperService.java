@@ -7,16 +7,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class TogglWrapperService {
     private static Logger log = LoggerFactory.getLogger(TogglWrapperService.class);
     private final TogglClient togglClient;
+    private final TogglReportClient togglReportClient;
 
-    public TogglWrapperService(TogglClient togglClient) {
+    public TogglWrapperService(TogglClient togglClient, TogglReportClient togglReportClient) {
         this.togglClient = togglClient;
+        this.togglReportClient = togglReportClient;
     }
 
     Mono<ConnectorResponseBody> stop(TogglWrapperEntryRequest request) {
@@ -75,6 +81,20 @@ public class TogglWrapperService {
                 .flatMap(
                         timeEntry -> {
                             return this.start(timeEntry.getData().getDescription(), timeEntry.getData().getPid());
+                        }
+                );
+    }
+
+    Mono<String> getStudyReport() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("user_agent", "hagikazu7@gmail.com");
+        parameters.put("workspace_id", "4343760");
+        return togglReportClient.getDetailedReport(parameters)
+                .flatMap(
+                        report -> {
+                            LocalTime t = LocalTime.MIDNIGHT.plusSeconds(report.getTotalGrand() / 1000);
+                            String timeFormatted = DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(t);
+                            return Mono.just(timeFormatted);
                         }
                 );
     }

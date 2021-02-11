@@ -45,4 +45,16 @@ public enum TogglProjectEnum {
         }
         throw new TogglWrapperNotExistProjectException(name + " is not found.");
     }
+
+    static String getEnglishProjectIds() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (TogglProjectEnum value : TogglProjectEnum.values()) {
+            if (value.getName().startsWith("English")) {
+                stringBuilder.append(String.valueOf(value.pid));
+                stringBuilder.append(",");
+            }
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
+    }
 }

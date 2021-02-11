@@ -48,5 +48,4 @@ public class TogglClient {
                 .retrieve()
                 .bodyToFlux(TogglTimeEntry.class);
     }
-
 }
