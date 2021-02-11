@@ -33,7 +33,7 @@ public class TogglWrapperHandler {
                 .andRoute(POST("/toggl/goHome"), this::goHome)
                 .andRoute(POST("/toggl/goingOut"), this::goingOut)
                 .andRoute(POST("/toggl/restart"), this::restartCurrentEntry)
-                .andRoute(POST("/toggl/report"), this::getStudyReport);
+                .andRoute(POST("/toggl/studyReport"), this::getStudyReport);
     }
 
     Mono<ServerResponse> startSelectable(ServerRequest request) {
