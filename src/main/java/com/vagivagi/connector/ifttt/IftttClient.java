@@ -16,9 +16,10 @@ public class IftttClient {
         this.iftttProperties = iftttProperties;
     }
 
-    public Mono<String> triggerEvent(IftttEventEnum iftttEventEnum) {
+    public Mono<String> triggerEvent(IftttEventEnum iftttEventEnum, IftttRequestBody body) {
         return this.webClient.post()
                 .uri(iftttEventEnum.getName() + "/with/key/" + iftttProperties.getKey())
+                .body(body, IftttRequestBody.class)
                 .retrieve()
                 .bodyToMono(String.class);
     }
