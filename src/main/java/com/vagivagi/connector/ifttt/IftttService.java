@@ -11,7 +11,11 @@ public class IftttService {
         this.iftttClient = iftttClient;
     }
 
-    public Mono<String> triggerLightChange(){
-        return iftttClient.triggerEvent(IftttEventEnum.LIGHT_0N);
+    public Mono<String> triggerLightChange() {
+        return iftttClient.triggerEvent(IftttEventEnum.LIGHT_0N, new IftttRequestBody());
+    }
+
+    public Mono<String> triggerReport(String today, String yesterday, String month) {
+        return iftttClient.triggerEvent(IftttEventEnum.STUDY_REPORT, new IftttRequestBody(today, yesterday, month));
     }
 }
