@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -88,9 +86,9 @@ public class TogglWrapperService {
         return togglReportClient.getDetailedReport(since, until)
                 .flatMap(
                         report -> {
-                            LocalTime t = LocalTime.MIDNIGHT.plusSeconds(report.getTotalGrand() / 1000);
-                            String timeFormatted = DateTimeFormatter.ofPattern("HH:mm:ss.SSS").format(t);
-                            return Mono.just(timeFormatted);
+                            long seconds = report.getTotalGrand() / 1000;
+                            String time = String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
+                            return Mono.just(time);
                         }
                 );
     }
@@ -104,16 +102,32 @@ public class TogglWrapperService {
                             return this.getStudyReport(yesterday, yesterday)
                                     .flatMap(
                                             yesterdayReport -> {
-                                                LocalDate start = LocalDate.now().minusMonths(1).plusDays(1);
-                                                LocalDate end = LocalDate.now().plusMonths(1).minusDays(1);
-                                                return this.getStudyReport(start, end).flatMap(
-                                                        monthlyReport -> {
-                                                            return Mono.just(new TogglWrapperStudyReport(todayReport, yesterdayReport, monthlyReport));
-                                                        }
-                                                );
+                                                LocalDate initial = LocalDate.now();
+                                                LocalDate start = initial.withDayOfMonth(1);
+                                                LocalDate end = initial.withDayOfMonth(initial.lengthOfMonth());
+                                                return this.getStudyReport(start, end)
+                                                        .log(start.toString())
+                                                        .log(end.toString())
+                                                        .flatMap(
+                                                                monthlyReport -> {
+                                                                    int margin = monthlyReport.length() - 7;
+                                                                    return Mono.just(new TogglWrapperStudyReport(this.addMarginReport(todayReport, margin),
+                                                                            this.addMarginReport(yesterdayReport, margin),
+                                                                            monthlyReport));
+                                                                }
+                                                        );
                                             }
                                     );
                         }
                 );
+    }
+
+    private String addMarginReport(String report, int margin) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < margin; i++) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append(report);
+        return stringBuilder.toString();
     }
 }
