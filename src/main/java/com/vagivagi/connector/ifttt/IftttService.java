@@ -12,10 +12,10 @@ public class IftttService {
     }
 
     public Mono<String> triggerLightChange() {
-        return iftttClient.triggerEvent(IftttEventEnum.LIGHT_0N, new IftttRequestBody());
+        return iftttClient.triggerEvent(IftttEventEnum.LIGHT_0N, Mono.just(new IftttRequestBody()));
     }
 
     public Mono<String> triggerReport(String today, String yesterday, String month) {
-        return iftttClient.triggerEvent(IftttEventEnum.STUDY_REPORT, new IftttRequestBody(today, yesterday, month));
+        return iftttClient.triggerEvent(IftttEventEnum.STUDY_REPORT, Mono.just(new IftttRequestBody(today, yesterday, month)));
     }
 }
