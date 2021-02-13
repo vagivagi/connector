@@ -5,11 +5,11 @@ import com.vagivagi.connector.common.ThirdResponseBody;
 
 public class TogglDetailedReportResponse implements ThirdResponseBody {
     @JsonProperty("total_grand")
-    private int totalGrand;
+    private long totalGrand;
     @JsonProperty("total_count")
-    private int totalCount;
+    private long totalCount;
 
-    public int getTotalGrand() {
+    public long getTotalGrand() {
         return totalGrand;
     }
 
@@ -17,7 +17,7 @@ public class TogglDetailedReportResponse implements ThirdResponseBody {
         this.totalGrand = totalGrand;
     }
 
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
