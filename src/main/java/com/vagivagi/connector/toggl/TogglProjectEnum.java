@@ -11,6 +11,7 @@ public enum TogglProjectEnum {
     COMMUTING(164896217, "Commuting"),
     MOVIE(161127080, "Movie"),
     WORK(161126645, "Work"),
+    ENGLISH_GENERAL(161126635, "English"),
     ENGLISH_HATSUON(165302293, "EnglishHatsuon"),
     ENGLISH_ONDOKU(165302294, "EnglishOndoku"),
     ENGLISH_HOBBY(165302316, "EnglishHobby"),
