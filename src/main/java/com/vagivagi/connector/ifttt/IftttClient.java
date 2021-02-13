@@ -1,5 +1,6 @@
 package com.vagivagi.connector.ifttt;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -16,9 +17,11 @@ public class IftttClient {
         this.iftttProperties = iftttProperties;
     }
 
-    public Mono<String> triggerEvent(IftttEventEnum iftttEventEnum) {
+    public Mono<String> triggerEvent(IftttEventEnum iftttEventEnum, Mono<IftttRequestBody> body) {
         return this.webClient.post()
                 .uri(iftttEventEnum.getName() + "/with/key/" + iftttProperties.getKey())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body, IftttRequestBody.class)
                 .retrieve()
                 .bodyToMono(String.class);
     }

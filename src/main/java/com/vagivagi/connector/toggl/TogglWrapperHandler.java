@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -33,7 +35,8 @@ public class TogglWrapperHandler {
                 .andRoute(POST("/toggl/goHome"), this::goHome)
                 .andRoute(POST("/toggl/goingOut"), this::goingOut)
                 .andRoute(POST("/toggl/restart"), this::restartCurrentEntry)
-                .andRoute(POST("/toggl/studyReport"), this::getStudyReport);
+                .andRoute(POST("/toggl/studyReport"), this::getStudyReport)
+                .andRoute(POST("/toggl/sendReport"), this::sendStudyReportIfttt);
     }
 
     Mono<ServerResponse> startSelectable(ServerRequest request) {
@@ -151,7 +154,7 @@ public class TogglWrapperHandler {
                 .flatMap(payload -> {
                     togglWrapperVerifier.verify(payload);
                     return ServerResponse.ok()
-                            .body(this.togglWrapperService.getStudyReport(), String.class)
+                            .body(this.togglWrapperService.getStudyReport(LocalDate.now(), LocalDate.now()), String.class)
                             .onErrorResume(e ->
                                     ServerResponse
                                             .badRequest()
@@ -159,6 +162,28 @@ public class TogglWrapperHandler {
                                                     .builder()
                                                     .message("Error " + e.getMessage())
                                                     .build()), ConnectorResponseBody.class));
+                });
+    }
+
+    Mono<ServerResponse> sendStudyReportIfttt(ServerRequest request) {
+        return request
+                .bodyToMono(TogglWrapperEntryRequest.class) //
+                .flatMap(payload -> {
+                    togglWrapperVerifier.verify(payload);
+                    return this.togglWrapperService.getStudyDetailReport()
+                            .flatMap(
+                                    report -> {
+                                        return ServerResponse.ok()
+                                                .body(iftttService.triggerReport(report.getToday(), report.getYesterday(), report.getMonthly()), String.class)
+                                                .onErrorResume(e ->
+                                                        ServerResponse
+                                                                .badRequest()
+                                                                .body(Mono.just(ConnectorResponseBody
+                                                                        .builder()
+                                                                        .message("Error " + e.getMessage())
+                                                                        .build()), ConnectorResponseBody.class));
+                                    }
+                            );
                 });
     }
 

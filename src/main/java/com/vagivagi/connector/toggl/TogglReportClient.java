@@ -6,7 +6,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @Component
 public class TogglReportClient {
@@ -22,13 +21,13 @@ public class TogglReportClient {
         this.togglProperties = togglProperties;
     }
 
-    public Mono<TogglDetailedReportResponse> getDetailedReport(Map<String, ?> parameterMap) {
+    public Mono<TogglDetailedReportResponse> getDetailedReport(LocalDate since, LocalDate until) {
         return this.webClient.get()
                 .uri(builder -> builder.path("details").queryParam("user_agent", togglProperties.getUserAgent())
                         .queryParam("workspace_id", togglProperties.getWorkspaceId())
                         .queryParam("project_ids", TogglProjectEnum.getEnglishProjectIds())
-                        .queryParam("since", LocalDate.now().toString())
-                        .queryParam("until", LocalDate.now().toString())
+                        .queryParam("since", since.toString())
+                        .queryParam("until", until.toString())
                         .build())
                 .retrieve()
                 .bodyToMono(TogglDetailedReportResponse.class);
