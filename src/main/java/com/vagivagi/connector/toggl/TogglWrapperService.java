@@ -1,6 +1,7 @@
 package com.vagivagi.connector.toggl;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
+import com.vagivagi.connector.common.LifeUtil;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +95,7 @@ public class TogglWrapperService {
     }
 
     Mono<TogglWrapperStudyReport> getStudyDetailReport() {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(LifeUtil.ZONE_TOKYO);
         return this.getStudyReport(today, today)
                 .flatMap(
                         todayReport -> {
@@ -102,9 +103,8 @@ public class TogglWrapperService {
                             return this.getStudyReport(yesterday, yesterday)
                                     .flatMap(
                                             yesterdayReport -> {
-                                                LocalDate initial = LocalDate.now();
-                                                LocalDate start = initial.withDayOfMonth(1);
-                                                LocalDate end = initial.withDayOfMonth(initial.lengthOfMonth());
+                                                LocalDate start = today.withDayOfMonth(1);
+                                                LocalDate end = today.withDayOfMonth(today.lengthOfMonth());
                                                 return this.getStudyReport(start, end)
                                                         .log(start.toString())
                                                         .log(end.toString())
