@@ -17,6 +17,7 @@ public enum TogglProjectEnum {
     ENGLISH_HOBBY_COMIC(165302316, "EnglishHobbyComic"),
     ENGLISH_HOBBY_MOVIE(168702280, "EnglishHobbyMovie"),
     ENGLISH_HOBBY_GAME(168707208, "EnglishHobbyGame"),
+    ENGLISH_SYSTEM(168707327, "EnglishSystem"),
     ENGLISH_SEIDOKU(165302299, "EnglishSeidoku"),
     ENGLISH_COMPOSITION(165302297, "EnglishComposition"),
     ENGLISH_PRE_TADOKU(165302304, "EnglishPreTadoku"),
