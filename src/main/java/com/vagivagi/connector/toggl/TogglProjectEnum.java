@@ -21,6 +21,7 @@ public enum TogglProjectEnum {
     ENGLISH_SEIDOKU(165302299, "EnglishSeidoku"),
     ENGLISH_COMPOSITION(165302297, "EnglishComposition"),
     ENGLISH_PRE_TADOKU(165302304, "EnglishPreTadoku"),
+    ENGLISH_BUNPOU(169345880, "EnglishBunpou"),
     ENGLISH_SPEAKING(165302313, "EnglishSpeaking"),
     ENGLISH_TOEIC(165302314, "EnglishSpeaking"),
     ENGLISH_WORD(165302310, "EnglishWord");
