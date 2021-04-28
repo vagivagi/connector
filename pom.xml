@@ -15,6 +15,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>home-connector</name>
     <description>vagivagi home connector for third party</description>
+    <developers>
+        <developer>
+            <name>vagivagi</name>
+        </developer>
+    </developers>
     <properties>
         <java.version>11</java.version>
         <start-class>com.vagivagi.connector.HomeConnectorApplication</start-class>
