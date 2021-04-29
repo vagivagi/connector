@@ -1,6 +1,6 @@
 # Home Hub
 
-hub API for IFTTT, Toggl
+Home hub API for IFTTT, Toggl
 
 ## Use for private
 
