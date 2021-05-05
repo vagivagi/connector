@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import java.time.Clock;
+import java.time.ZoneId;
+
 @SpringBootApplication
 @EnableConfigurationProperties({TogglProperties.class, IftttProperties.class})
 public class HomeConnectorApplication {
@@ -21,5 +24,10 @@ public class HomeConnectorApplication {
     @Bean
     RouterFunction<ServerResponse> routes(TogglWrapperHandler togglWrapperHandler) {
         return togglWrapperHandler.routes();
+    }
+
+    @Bean
+    Clock clock() {
+        return Clock.system(ZoneId.of("Asia/Tokyo"));
     }
 }
