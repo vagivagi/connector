@@ -2,7 +2,7 @@ package com.vagivagi.connector;
 
 import com.vagivagi.connector.ifttt.IftttProperties;
 import com.vagivagi.connector.toggl.TogglProperties;
-import com.vagivagi.connector.toggl.TogglWrapperHandler;
+import com.vagivagi.connector.toggl.wrapper.TogglWrapperHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

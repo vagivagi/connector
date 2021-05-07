@@ -1,7 +1,8 @@
-package com.vagivagi.connector.toggl;
+package com.vagivagi.connector.toggl.wrapper;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
 import com.vagivagi.connector.common.LifeUtil;
+import com.vagivagi.connector.toggl.*;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

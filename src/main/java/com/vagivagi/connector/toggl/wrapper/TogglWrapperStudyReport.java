@@ -1,4 +1,4 @@
-package com.vagivagi.connector.toggl;
+package com.vagivagi.connector.toggl.wrapper;
 
 public class TogglWrapperStudyReport {
     private final String today;
