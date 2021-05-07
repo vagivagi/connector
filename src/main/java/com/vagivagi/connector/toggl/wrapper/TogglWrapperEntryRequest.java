@@ -1,4 +1,4 @@
-package com.vagivagi.connector.toggl;
+package com.vagivagi.connector.toggl.wrapper;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 

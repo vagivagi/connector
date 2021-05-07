@@ -1,5 +1,6 @@
-package com.vagivagi.connector.toggl;
+package com.vagivagi.connector.toggl.wrapper;
 
+import com.vagivagi.connector.toggl.TogglProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

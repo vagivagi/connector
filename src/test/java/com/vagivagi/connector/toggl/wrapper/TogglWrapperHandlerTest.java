@@ -1,8 +1,11 @@
-package com.vagivagi.connector.toggl;
+package com.vagivagi.connector.toggl.wrapper;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
 import com.vagivagi.connector.common.LifeUtil;
 import com.vagivagi.connector.ifttt.IftttService;
+import com.vagivagi.connector.toggl.TogglProjectEnum;
+import com.vagivagi.connector.toggl.TogglTimeEntry;
+import com.vagivagi.connector.toggl.TogglTimeEntryResponseBody;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

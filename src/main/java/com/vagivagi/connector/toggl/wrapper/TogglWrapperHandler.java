@@ -1,8 +1,10 @@
-package com.vagivagi.connector.toggl;
+package com.vagivagi.connector.toggl.wrapper;
 
 import com.vagivagi.connector.common.ConnectorResponseBody;
 import com.vagivagi.connector.common.LifeUtil;
 import com.vagivagi.connector.ifttt.IftttService;
+import com.vagivagi.connector.toggl.TogglProjectEnum;
+import com.vagivagi.connector.toggl.TogglTimeEntry;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;

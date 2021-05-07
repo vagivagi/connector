@@ -1,5 +1,7 @@
 package com.vagivagi.connector.toggl;
 
+import com.vagivagi.connector.toggl.wrapper.TogglWrapperNotExistProjectException;
+
 public enum TogglProjectEnum {
 
     // FIXME プロジェクト追加後
@@ -42,7 +44,7 @@ public enum TogglProjectEnum {
         return name;
     }
 
-    static TogglProjectEnum toToggleProjectEnum(String name) {
+    public static TogglProjectEnum toToggleProjectEnum(String name) {
         for (TogglProjectEnum value : TogglProjectEnum.values()) {
             if (value.getName().equalsIgnoreCase(name)) {
                 return value;
@@ -51,7 +53,7 @@ public enum TogglProjectEnum {
         throw new TogglWrapperNotExistProjectException(name + " is not found.");
     }
 
-    static String getEnglishProjectIds() {
+    public static String getEnglishProjectIds() {
         StringBuilder stringBuilder = new StringBuilder();
         for (TogglProjectEnum value : TogglProjectEnum.values()) {
             if (value.getName().startsWith("English")) {
