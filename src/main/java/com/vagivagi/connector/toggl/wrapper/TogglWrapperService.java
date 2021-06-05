@@ -53,7 +53,7 @@ public class TogglWrapperService {
     }
 
     Mono<TogglTimeEntry> getTimeEntryFromPastRecord(String description, int pid) {
-        return togglClient.getTimeEntries()
+        return togglClient.getTimeEntries().log("get past records")
                 .filter(
                         timeEntry ->
                                 Optional.ofNullable(description).orElse("").trim()
@@ -65,10 +65,10 @@ public class TogglWrapperService {
     }
 
     Mono<TogglTimeEntry> convertNumberEntryToWorkProject(Mono<TogglTimeEntry> entryMono) {
-        return entryMono.flatMap(
+        return entryMono.log("if entry description is number, it is work project.").flatMap(
                 timeEntry -> {
                     if (NumberUtils.isNumber(timeEntry.getDescription())) {
-                        return Mono.just(new TogglTimeEntry(timeEntry.getDescription(), TogglProjectEnum.WORK.getPid()));
+                        return Mono.just(new TogglTimeEntry(timeEntry.getDescription(), TogglProjectEnum.WORK.getPid())).log("this is work.");
                     }
                     return Mono.just(timeEntry);
                 }
