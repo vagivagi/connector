@@ -1,11 +1,14 @@
 package com.vagivagi.connector.toggl;
 
+import com.vagivagi.connector.common.LifeUtil;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
 
 @Component
 public class TogglClient {
@@ -43,8 +46,11 @@ public class TogglClient {
     }
 
     public Flux<TogglTimeEntry> getTimeEntries() {
+        // get entries for 3 days
         return this.webClient.get()
                 .uri("time_entries")
+                .attribute("start_date", LocalDateTime.now(LifeUtil.ZONE_TOKYO).minusDays(3))
+                .attribute("end_date", LocalDateTime.now(LifeUtil.ZONE_TOKYO))
                 .retrieve()
                 .bodyToFlux(TogglTimeEntry.class);
     }
