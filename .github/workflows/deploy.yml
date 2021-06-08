@@ -5,6 +5,8 @@ on:
     branches: [ master ]
 env:
   IMAGE_NAME: connector
+  BPL_JVM_THREAD_COUNT: 20
+  BPL_JVM_HEAD_ROOM: 5
 jobs:
   push:
 
