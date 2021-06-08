@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -53,15 +52,14 @@ public class TogglWrapperService {
     }
 
     Mono<TogglTimeEntry> getTimeEntryFromPastRecord(String description, int pid) {
-        return togglClient.getTimeEntries().log("get past records")
+        return togglClient.getTimeEntries()
                 .filter(
                         timeEntry ->
                                 Optional.ofNullable(description).orElse("").trim()
                                         .equalsIgnoreCase(
                                                 Optional.ofNullable(timeEntry.getDescription())
                                                         .orElse("").trim())
-                ).sort(Comparator.comparing(TogglTimeEntry::getAt).reversed())
-                .take(1).defaultIfEmpty(new TogglTimeEntry(description, pid)).single();
+                ).take(1).log("get past records").defaultIfEmpty(new TogglTimeEntry(description, pid)).single();
     }
 
     Mono<TogglTimeEntry> convertNumberEntryToWorkProject(Mono<TogglTimeEntry> entryMono) {
