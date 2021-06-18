@@ -4,7 +4,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Component
@@ -30,6 +32,9 @@ public class TogglReportClient {
                         .queryParam("until", until.toString())
                         .build())
                 .retrieve()
-                .bodyToMono(TogglDetailedReportResponse.class);
+                .bodyToMono(TogglDetailedReportResponse.class)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5)))
+                .delaySubscription(Duration.ofSeconds(10))
+                .log("call client for getting report");
     }
 }
