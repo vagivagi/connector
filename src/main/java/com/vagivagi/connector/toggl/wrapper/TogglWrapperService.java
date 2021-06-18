@@ -79,7 +79,7 @@ public class TogglWrapperService {
                         timeEntry -> {
                             return this.start(timeEntry.getData().getDescription(), timeEntry.getData().getPid());
                         }
-                );
+                ).log("restart current entry");
     }
 
     Mono<String> getStudyReport(LocalDate since, LocalDate until) {
