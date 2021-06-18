@@ -7,7 +7,9 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Component
@@ -26,7 +28,10 @@ public class TogglClient {
         return this.webClient.get()
                 .uri("time_entries/current")
                 .retrieve()
-                .bodyToMono(TogglTimeEntryResponseBody.class);
+                .bodyToMono(TogglTimeEntryResponseBody.class)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5)))
+                .delaySubscription(Duration.ofSeconds(10))
+                .log("call client for getting current entry");
     }
 
     public Mono<TogglTimeEntryResponseBody> stopEntry(int timeEntryId) {
@@ -42,7 +47,10 @@ public class TogglClient {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(body, TogglStartEntryRequestBody.class)
                 .retrieve()
-                .bodyToMono(TogglTimeEntryResponseBody.class);
+                .bodyToMono(TogglTimeEntryResponseBody.class)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5)))
+                .delaySubscription(Duration.ofSeconds(10))
+                .log("call client for starting entry");
     }
 
     public Flux<TogglTimeEntry> getTimeEntries() {
@@ -52,6 +60,9 @@ public class TogglClient {
                 .attribute("start_date", LocalDateTime.now(LifeUtil.ZONE_TOKYO).minusDays(3))
                 .attribute("end_date", LocalDateTime.now(LifeUtil.ZONE_TOKYO))
                 .retrieve()
-                .bodyToFlux(TogglTimeEntry.class);
+                .bodyToFlux(TogglTimeEntry.class)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5)))
+                .delaySubscription(Duration.ofSeconds(10))
+                .log("call client for getting entries");
     }
 }
